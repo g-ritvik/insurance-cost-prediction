@@ -45,6 +45,19 @@ cd insurance-cost-prediction
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
+> **Windows PowerShell note:** If you see an error saying that running scripts is disabled on the system when activating the virtual environment, run:
+>
+> ```powershell
+> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+> ```
+>
+> Then activate the virtual environment again:
+>
+> ```powershell
+> .\.venv\Scripts\Activate.ps1
+> ```
+>
+> This changes the execution policy only for the current PowerShell session.
 
 **macOS/Linux:**
 
@@ -139,11 +152,11 @@ Gradient Descent standardizes the features during training and converts the resu
 
 The models produced the following results:
 
-| Model                        |          MSE |     RMSE |     MAE |     R² |
-| ---------------------------- | -----------: | -------: | ------: | -----: |
-| BMI-only Baseline            | 140764214.67 | 11864.41 | 9172.30 | 0.0394 |
-| Two-feature Normal Equation  | 129359773.29 | 11373.64 | 9032.28 | 0.1173 |
-| Two-feature Gradient Descent | 129359773.29 | 11373.64 | 9032.28 | 0.1173 |
+| Model | w0 | w1 (bmi) | w2 (age) | MSE | RMSE | MAE | R² |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| BMI-only Baseline | 1178.18 | 394.33 | — | 140764214.67 | 11864.41 | 9172.30 | 0.0394 |
+| Two-feature Normal Equation | -6437.35 | 333.39 | 241.90 | 129359773.29 | 11373.64 | 9032.28 | 0.1173 |
+| Two-feature Gradient Descent | -6437.35 | 333.39 | 241.90 | 129359773.29 | 11373.64 | 9032.28 | 0.1173 |
 
 The Normal Equation and Gradient Descent produced the same coefficients to two decimal places.
 
