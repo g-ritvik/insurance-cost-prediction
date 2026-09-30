@@ -1,5 +1,8 @@
 # Insurance Cost Prediction
 
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)
+![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Linear%20Regression-orange)
+
 A two-feature linear regression project using `bmi` and `age` to predict `expenses`. The project implements both the Normal Equation and Gradient Descent from scratch and compares them with a BMI-only baseline.
 
 ## Project Structure
