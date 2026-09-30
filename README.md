@@ -1,8 +1,6 @@
 # Insurance Cost Prediction
 
-A Python linear regression project using real insurance data to examine how `bmi` and `age` relate to `expenses`.
-
-The project compares a BMI-only baseline with a two-feature model trained using the Normal Equation and Gradient Descent.
+A two-feature linear regression project using `bmi` and `age` to predict `expenses`. The project implements both the Normal Equation and Gradient Descent from scratch and compares them with a BMI-only baseline.
 
 ## Project Structure
 
@@ -17,166 +15,158 @@ insurance-cost-prediction/
 ├── src/
 │   ├── regression_models.py
 │   └── two_feature_linear_regression.py
+├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
 
-### Main Files
-
-* `data/insurance.csv` — dataset used for the analysis
-* `data/data_download.py` — utility for downloading the dataset
-* `src/regression_models.py` — regression, matrix-solving, standardization, and prediction functions
-* `src/two_feature_linear_regression.py` — main analysis script
-* `reports/assignment_results.csv` — model comparison results
-* `reports/MEMO.md` — interpretation of the results
-
 ## Requirements
 
-* Python 3.10 or newer
-* Git
-* Internet access for cloning the repository
-
-No additional Python packages are required to run the main analysis.
+* Python 3
+* `kagglehub` — only required if the dataset needs to be downloaded again
 
 ## Setup
 
 ### 1. Clone the repository
 
-#### Windows
-
-Open PowerShell:
-
-```powershell
-git clone https://github.com/g-ritvik/insurance-cost-prediction.git
-cd insurance-cost-prediction
-```
-
-#### macOS
-
-Open Terminal:
-
 ```bash
 git clone https://github.com/g-ritvik/insurance-cost-prediction.git
 cd insurance-cost-prediction
 ```
 
-### 2. Check Python
+### 2. Create a virtual environment
 
-#### Windows
-
-```powershell
-python --version
-```
-
-If needed:
+**Windows:**
 
 ```powershell
-py --version
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-#### macOS
+**macOS/Linux:**
 
 ```bash
-python3 --version
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-Python 3.10 or newer is recommended.
+### 3. Install the required package
 
-### 3. Verify the dataset
+```bash
+python -m pip install -r requirements.txt
+```
 
-The dataset is already included at:
+On macOS/Linux, use:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+## Dataset
+
+The repository already includes:
 
 ```text
 data/insurance.csv
 ```
 
-No additional download is required to run the analysis.
+No download is required to run the analysis.
 
-The repository also includes `data/data_download.py` if the dataset needs to be downloaded again.
+### Download the Dataset Again
+
+If `insurance.csv` is missing or needs to be downloaded again, run:
+
+**Windows:**
+
+```powershell
+python data/data_download.py
+```
+
+**macOS/Linux:**
+
+```bash
+python3 data/data_download.py
+```
+
+The download script uses `kagglehub` to retrieve the dataset.
 
 ## Run the Analysis
 
-### Windows
+From the project root, run:
+
+**Windows:**
 
 ```powershell
 python src/two_feature_linear_regression.py
 ```
 
-If needed:
-
-```powershell
-py src/two_feature_linear_regression.py
-```
-
-### macOS
+**macOS/Linux:**
 
 ```bash
 python3 src/two_feature_linear_regression.py
 ```
 
-The script loads the data, trains the models, calculates the evaluation metrics, prints a comparison table, and saves the results to:
+The script:
 
-```text
-reports/assignment_results.csv
-```
+1. Loads `bmi`, `age`, and `expenses`.
+2. Fits a BMI-only baseline.
+3. Fits a two-feature Normal Equation model.
+4. Fits a two-feature Gradient Descent model.
+5. Calculates MSE, RMSE, MAE, and R².
+6. Prints a model comparison table.
+7. Saves the results to `reports/assignment_results.csv`.
 
 ## Models
 
-### BMI-only Baseline
+The project compares:
+
+* **BMI-only baseline**
+* **Two-feature Normal Equation**
+* **Two-feature Gradient Descent**
+
+The two-feature models use:
 
 ```text
-expenses = w0 + w1 * bmi
+expenses = w0 + w1 × bmi + w2 × age
 ```
 
-Used as the baseline for comparison.
-
-### Two-Feature Normal Equation
-
-```text
-expenses = w0 + w1 * bmi + w2 * age
-```
-
-The Normal Equation is solved using a general Gauss-Jordan matrix method.
-
-### Two-Feature Gradient Descent
-
-The `bmi` and `age` features are standardized before training. The resulting weights are then converted back to their original feature units.
+Gradient Descent standardizes the features during training and converts the resulting coefficients back to the original feature scale.
 
 ## Results
 
-Expected results are approximately:
+The models produced the following results:
 
-```text
-Model                                   MSE         RMSE          MAE         R2
---------------------------------------------------------------------------------
-BMI-only Baseline              140764214.67     11864.41      9172.30     0.0394
-Two-feature Normal Equation    129359773.29     11373.64      9032.28     0.1173
-Two-feature Gradient Descent   129359773.29     11373.64      9032.28     0.1173
-```
+| Model                        |          MSE |     RMSE |     MAE |     R² |
+| ---------------------------- | -----------: | -------: | ------: | -----: |
+| BMI-only Baseline            | 140764214.67 | 11864.41 | 9172.30 | 0.0394 |
+| Two-feature Normal Equation  | 129359773.29 | 11373.64 | 9032.28 | 0.1173 |
+| Two-feature Gradient Descent | 129359773.29 | 11373.64 | 9032.28 | 0.1173 |
 
-The two-feature models produce approximately:
+The Normal Equation and Gradient Descent produced the same coefficients to two decimal places.
 
-```text
-w0 = -6437.35
-w1 = 333.39
-w2 = 241.90
-```
+## Reports
 
-Adding `age` increases R² from `0.0394` to `0.1173`. The Normal Equation and Gradient Descent produce the same weights to two decimal places.
-
-The full interpretation is available in `reports/MEMO.md`.
+* `reports/assignment_results.csv` — model metrics and comparison
+* `reports/MEMO.md` — interpretation of the results and model findings
 
 ## Troubleshooting
 
-**Python is not recognized**
+### `ModuleNotFoundError: No module named 'kagglehub'`
 
-* Windows: try `py --version`
-* macOS: try `python3 --version`
+Install the dependencies:
 
-**Dataset not found**
+```bash
+python -m pip install -r requirements.txt
+```
 
-Make sure `data/insurance.csv` exists and that you are running the command from the `insurance-cost-prediction` folder.
+### `FileNotFoundError: data/insurance.csv`
 
-**Results differ slightly**
+Download the dataset again:
 
-Small differences in decimal places can occur because of floating-point calculations.
+```bash
+python data/data_download.py
+```
+
+### Python command not recognized
+
+Make sure Python 3 is installed and available from your terminal. On some systems, use `python3` instead of `python`.
